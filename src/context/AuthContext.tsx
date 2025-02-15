@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (currentUser) {
         const profileFound = await fetchUserProfile(currentUser.uid);
         if (profileFound && (location.pathname === ROUTE_LOGIN || location.pathname === ROUTE_SIGNUP)) {
-          navigate(ROUTE_BASE); // Redirect only if profile exists
+          navigate(ROUTE_BASE);
         }
       } else {
         setUserProfile(null);

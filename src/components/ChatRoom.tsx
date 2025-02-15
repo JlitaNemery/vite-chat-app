@@ -4,7 +4,7 @@ import { fetchChatRooms } from '../firebase/firestore';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
-const Chat = ({ roomName }: { roomName: string }) => {
+const ChatRoom = ({ roomName }: { roomName: string }) => {
   const { data: chatRooms } = useQuery({
     queryKey: ['chatRooms'],
     queryFn: fetchChatRooms,
@@ -29,4 +29,4 @@ const Chat = ({ roomName }: { roomName: string }) => {
   );
 };
 
-export default Chat;
+export default ChatRoom;
