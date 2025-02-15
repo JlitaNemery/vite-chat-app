@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy": "vite build && vite-plugin-gh-pages"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.0",
