@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { useQueryClient, useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { fetchChatRooms, subscribeToUsers } from '../firebase/firestore';
 import { useToast } from '@chakra-ui/react';
 import { ROUTE_LOGIN } from '../common/consts';
@@ -12,17 +12,25 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
   useEffect(() => {
-    const unsubscribe = subscribeToUsers((users) => {
-      queryClient.setQueryData(['users'], users);
-    });
-    return () => unsubscribe();
-  }, [queryClient]);
+    if (!user) return;
+    const fetchAndSubscribe = async () => {
+      const unsubscribe = await subscribeToUsers((users) => {
+        console.log(users)
+        queryClient.setQueryData(['users'], users);
+        queryClient.invalidateQueries({ queryKey: ['users'] });
 
-  useQuery({
-    queryKey: ['users'],
-    queryFn: () => new Promise((resolve) => resolve({})),
-    staleTime: Infinity,
-  });
+      });
+
+      return unsubscribe;
+    };
+
+    let unsubscribe: () => void;
+    fetchAndSubscribe().then((unsub) => (unsubscribe = unsub));
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [user, queryClient]);
 
   useEffect(() => {
     if (userProfile) {

@@ -63,7 +63,7 @@ export const listenForMessages = (roomId: string, callback: (messages: Message[]
   }
 };
 
-export const subscribeToUsers = (callback: (users: Record<string, { displayName: string; imageUrl: string }>) => void) => {
+export const subscribeToUsers = async (callback: (users: Record<string, { displayName: string; imageUrl: string }>) => void) => {
   const usersCollection = collection(db, 'users');
 
   return onSnapshot(
@@ -73,7 +73,7 @@ export const subscribeToUsers = (callback: (users: Record<string, { displayName:
 
       snapshot.forEach((doc) => {
         const userData = doc.data();
-        if (!userData) return; // 🔥 Skip if doc.data() is empty
+        if (!userData) return;
 
         usersData[doc.id] = {
           imageUrl: userData.imageUrl || '',
@@ -81,8 +81,8 @@ export const subscribeToUsers = (callback: (users: Record<string, { displayName:
         };
       });
 
-      // ✅ Prevent state update if Firestore data is empty
       if (Object.keys(usersData).length > 0) {
+        console.log('Real-time Firestore Users:', usersData);
         callback(usersData);
       }
     },
