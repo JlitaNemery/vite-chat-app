@@ -15,7 +15,7 @@ const AuthForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
-  const isSignUp = location.pathname === '/signup';
+  const isSignUp = location.pathname === ROUTE_SIGNUP;
 
   const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email').required('Email is required'),
