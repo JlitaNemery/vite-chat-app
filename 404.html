@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="refresh" content="0; url=./index.html" />
+    <script>
+      var path = window.location.pathname.replace('/vite-chat-app', '');
+      window.location.replace('/vite-chat-app/' + '#!' + path);
+    </script>
   </head>
   <body></body>
 </html>
