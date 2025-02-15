@@ -32,7 +32,7 @@ const Header = () => {
           <Tooltip label="change picture">
             <Avatar
               name={userProfile?.displayName}
-              src={users?.[userProfile.uid].imageUrl || ''}
+              src={users?.[userProfile.uid]?.imageUrl || userProfile?.imageUrl || ''}
               cursor="pointer"
               size="sm"
               onClick={() => setIsImageUpload((prev) => !prev)}

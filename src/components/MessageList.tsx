@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Text, Avatar, VStack, Spinner, useToast } from '@chakra-ui/react';
 import { listenForMessages } from '../firebase/firestore';
 import { Message } from '../firebase/firestore';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { formatTimestamp } from '../utils/helpers';
 import { UserRecord } from '../common/types';
 
@@ -11,9 +11,11 @@ const MessageList = ({ roomId }: { roomId: string }) => {
   const [loading, setLoading] = useState(true);
   const toast = useToast();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: users } = useQuery<UserRecord>({
     queryKey: ['users'],
+    queryFn: () => queryClient.getQueryData(['users']) ?? {},
     enabled: true,
     staleTime: Infinity,
   });
