@@ -1,9 +1,10 @@
-import { Box, Button, Input, Heading, VStack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Input, Heading, VStack, Text, useToast, Spinner } from '@chakra-ui/react';
 import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { signInWithEmail, signInWithGoogle, registerUser } from '../firebase/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ROUTE_BASE, ROUTE_LOGIN, ROUTE_SIGNUP } from '../common/consts';
+import { ROUTE_LOGIN, ROUTE_SIGNUP } from '../common/consts';
+import { useState } from 'react';
 
 interface FormValues {
   email: string;
@@ -12,6 +13,7 @@ interface FormValues {
 }
 
 const AuthForm = () => {
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
@@ -24,8 +26,9 @@ const AuthForm = () => {
   });
 
   const handleGoogleSignin = async () => {
-    const user = await signInWithGoogle();
-    if (user) navigate(ROUTE_BASE);
+    setLoadingGoogle(true);
+    await signInWithGoogle();
+    setLoadingGoogle(false);
   };
 
   const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
@@ -81,7 +84,7 @@ const AuthForm = () => {
               {!isSignUp && (
                 <>
                   <Text>or</Text>
-                  <Button colorScheme="red" onClick={handleGoogleSignin}>
+                  <Button colorScheme="red" onClick={handleGoogleSignin} isLoading={loadingGoogle}>
                     Sign in with Google
                   </Button>
                 </>
