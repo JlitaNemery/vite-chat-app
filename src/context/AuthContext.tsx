@@ -6,6 +6,7 @@ import { auth } from '../firebase/auth';
 import { db } from '../firebase/firebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { UserProfile } from '../common/types';
+import { ROUTE_BASE, ROUTE_LOGIN, ROUTE_SIGNUP } from '../common/consts';
 
 interface AuthContextType {
   userProfile: UserProfile | null;
@@ -58,13 +59,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (currentUser) {
         const profileFound = await fetchUserProfile(currentUser.uid);
-        if (profileFound && (location.pathname === '/login' || location.pathname === '/signup')) {
-          navigate('/'); // Redirect only if profile exists
+        if (profileFound && (location.pathname === ROUTE_LOGIN || location.pathname === ROUTE_SIGNUP)) {
+          navigate(ROUTE_BASE); // Redirect only if profile exists
         }
       } else {
         setUserProfile(null);
-        if (location.pathname !== '/signup' && location.pathname !== '/login') {
-          navigate('/login');
+        if (location.pathname !== ROUTE_SIGNUP && location.pathname !== ROUTE_LOGIN) {
+          navigate(ROUTE_LOGIN);
         }
       }
     });

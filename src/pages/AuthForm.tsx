@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { signInWithEmail, signInWithGoogle, registerUser } from '../firebase/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { ROUTE_BASE, ROUTE_LOGIN, ROUTE_SIGNUP } from '../common/consts';
 
 interface FormValues {
   email: string;
@@ -24,7 +25,7 @@ const AuthForm = () => {
 
   const handleGoogleSignin = async () => {
     const user = await signInWithGoogle();
-    if (user) navigate('/');
+    if (user) navigate(ROUTE_BASE);
   };
 
   const handleSubmit = async (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
@@ -85,7 +86,7 @@ const AuthForm = () => {
                   </Button>
                 </>
               )}
-              <Button variant="link" colorScheme="blue" onClick={() => navigate(isSignUp ? '/login' : '/signup')}>
+              <Button variant="link" colorScheme="blue" onClick={() => navigate(isSignUp ? ROUTE_LOGIN : ROUTE_SIGNUP)}>
                 {isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign Up"}
               </Button>
             </VStack>

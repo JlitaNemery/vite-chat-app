@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { fetchChatRooms, fetchUsers } from '../firebase/firestore';
 import { useToast } from '@chakra-ui/react';
+import { ROUTE_LOGIN } from '../common/consts';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { userProfile, user, loading } = useAuth();
@@ -55,7 +56,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   }, [userProfile, queryClient]);
 
   if (loading) return <p>Loading...</p>;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to={ROUTE_LOGIN} replace />;
 
   return children;
 };

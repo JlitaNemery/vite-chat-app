@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChatRoom } from '../common/types';
 import { useQuery } from '@tanstack/react-query';
 import { fetchChatRooms } from '../firebase/firestore';
+import { ROUTE_CHAT } from '../common/consts';
 
 const ChatRoomList = () => {
   const navigate = useNavigate();
@@ -13,9 +14,9 @@ const ChatRoomList = () => {
   });
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const roomId = event.target.value;
-    if (roomId) {
-      navigate(`/chat/${roomId}`);
+    const roomName = event.target.value;
+    if (roomName) {
+      navigate(`${ROUTE_CHAT}/${roomName}`);
     }
   };
 

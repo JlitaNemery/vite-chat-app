@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import AuthForm from './pages/AuthForm';
 import Header from './components/Header';
+import { ROUTE_BASE, ROUTE_CHAT_ROOM, ROUTE_LOGIN, ROUTE_SIGNUP } from './common/consts';
 import './index.scss';
 
 const queryClient = new QueryClient();
@@ -20,10 +21,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <AuthProvider>
             <Header />
             <Routes>
-              <Route path="/login" element={<AuthForm />} />
-              <Route path="/signup" element={<AuthForm />} />
+              <Route path={ROUTE_LOGIN} element={<AuthForm />} />
+              <Route path={ROUTE_SIGNUP} element={<AuthForm />} />
               <Route
-                path="/"
+                path={ROUTE_BASE}
                 element={
                   <ProtectedRoute>
                     <Home />
@@ -31,7 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 }
               />
               <Route
-                path="/chat/:roomName"
+                path={ROUTE_CHAT_ROOM}
                 element={
                   <ProtectedRoute>
                     <Home />
