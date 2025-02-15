@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, Text, Avatar, VStack, Spinner, useToast } from '@chakra-ui/react';
 import { listenForMessages } from '../firebase/firestore';
-import { Message, fetchUsers } from '../firebase/firestore';
+import { Message } from '../firebase/firestore';
 import { useQuery } from '@tanstack/react-query';
 import { formatTimestamp } from '../utils/helpers';
+import { UserRecord } from '../common/types';
 
 const MessageList = ({ roomId }: { roomId: string }) => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -11,10 +12,10 @@ const MessageList = ({ roomId }: { roomId: string }) => {
   const toast = useToast();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const { data: users } = useQuery({
+  const { data: users } = useQuery<UserRecord>({
     queryKey: ['users'],
-    queryFn: fetchUsers,
-    enabled: false,
+    enabled: true,
+    staleTime: Infinity,
   });
 
   useEffect(() => {

@@ -63,15 +63,18 @@ export const listenForMessages = (roomId: string, callback: (messages: Message[]
   }
 };
 
-export const fetchUsers = async () => {
+export const subscribeToUsers = (callback: (users: Record<string, { displayName: string; imageUrl: string }>) => void) => {
   const usersCollection = collection(db, 'users');
-  const usersSnapshot = await getDocs(usersCollection);
 
-  return usersSnapshot.docs.reduce((acc, doc) => {
-    acc[doc.id] = {
-      imageUrl: doc.data().imageUrl as string,
-      displayName: doc.data().displayName as string,
-    };
-    return acc;
-  }, {} as Record<string, { displayName: string; imageUrl: string }>);
+  return onSnapshot(usersCollection, (snapshot) => {
+    const usersData = snapshot.docs.reduce((acc, doc) => {
+      acc[doc.id] = {
+        imageUrl: doc.data().imageUrl as string,
+        displayName: doc.data().displayName as string,
+      };
+      return acc;
+    }, {} as Record<string, { displayName: string; imageUrl: string }>);
+
+    callback(usersData);
+  });
 };

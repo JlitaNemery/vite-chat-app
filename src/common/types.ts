@@ -10,3 +10,7 @@ export interface UserProfile {
   imageUrl: string;
   isGoogleUser: boolean;
 }
+
+export interface UserRecord {
+  [userId: string]: { displayName: string; imageUrl: string };
+}
