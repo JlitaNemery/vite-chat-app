@@ -6,7 +6,7 @@ export const FIREBASE_STORAGE_BUCKET = import.meta.env.VITE_FIREBASE_STORAGE_BUC
 export const FIREBASE_MESSAGING_SENDER_ID = import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
 export const FIREBASE_APP_ID = import.meta.env.VITE_FIREBASE_APP_ID;
 
-export const ROUTE_BASE = '/vite-chat-app';
+export const ROUTE_BASE = import.meta.env.VITE_ROUTE_BASE;
 export const ROUTE_LOGIN = `${ROUTE_BASE}/login`;
 export const ROUTE_SIGNUP = `${ROUTE_BASE}/signup`;
 export const ROUTE_CHAT = `${ROUTE_BASE}/chat`;

@@ -1,9 +1,9 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, lazy, Suspense } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useQueryClient } from '@tanstack/react-query';
 import { fetchChatRooms, subscribeToUsers } from '../firebase/firestore';
-import { useToast } from '@chakra-ui/react';
+import { useToast, Spinner, Center } from '@chakra-ui/react';
 import { ROUTE_LOGIN } from '../common/consts';
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
@@ -13,12 +13,11 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (!user) return;
+
     const fetchAndSubscribe = async () => {
       const unsubscribe = await subscribeToUsers((users) => {
-        console.log(users)
         queryClient.setQueryData(['users'], users);
         queryClient.invalidateQueries({ queryKey: ['users'] });
-
       });
 
       return unsubscribe;
@@ -56,10 +55,26 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     }
   }, [userProfile, queryClient]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Center h="100vh">
+        <Spinner size="xl" />
+      </Center>
+    );
+
   if (!user) return <Navigate to={ROUTE_LOGIN} replace />;
 
-  return children;
+  return (
+    <Suspense
+      fallback={
+        <Center h="100vh">
+          <Spinner size="xl" />
+        </Center>
+      }
+    >
+      {children}
+    </Suspense>
+  );
 };
 
 export default ProtectedRoute;
